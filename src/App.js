@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./App.css";
 
@@ -10,9 +10,11 @@ export default function App() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const iFrameRef = useRef(null);
 
-  //POSTER : imgConfig.baseImgUrl/imgConfig.posterImgWidth/posterPath
-
+  // For the purposes of this demonstration, urls to call moviesdb are below.
+  // Normally api keys would go in an env file and we could construct the links from a base
+  // as needed using string interpolation. Other values such as language and page number could be selected
   const configurl =
     "https://api.themoviedb.org/3/configuration?api_key=72e2ed255c67202cd20a51ec3b44f2fa";
   const url =
@@ -33,6 +35,9 @@ export default function App() {
       }
     };
 
+    // Movie poster images in the data is just a path. Looking at the movies API, 
+    // I found that getting this data from the config url will help get the movie 
+    // poster links. 
     const fetchImgConfig = async () => {
       try {
         let { data } = await axios.get(configurl);
@@ -50,9 +55,13 @@ export default function App() {
     fetchImgConfig();
   }, []);
 
-  //send title to embedded app
+  // function to send a title to the embedded app on click
   const getTitle = (title) => {
-    console.log(title);
+    if(!iFrameRef.current){
+      return
+    }
+    // if running locally, change link below e.g., "http://localhost:3001/"
+    iFrameRef.current.contentWindow.postMessage(title, "https://csb-v9xs7u.netlify.app/")
   };
 
   let movieCards;
@@ -63,17 +72,16 @@ export default function App() {
         className="movie-card"
         onClick={() => getTitle(movie.title)}
       >
-        <h2>{movie.title}</h2>
+        <h2 className="movie-title">{movie.title}</h2>
         <img
           src={`${imgConfig.baseImgUrl}${imgConfig.posterImgWidth}${movie.poster_path}`}
           alt="movie poster"
         />
+        <p className="movie-overview">{movie.overview}</p>
       </div>
     );
   });
-  // console.log(movies);
-  // console.log(imgConfig);
-
+  
   return (
     <div className="App">
       <div className="container">
@@ -85,10 +93,11 @@ export default function App() {
           )}
         </section>
         <section className="embedded-list">
-          <ul>
-            <li>movie title 1</li>
-            <li>title of movie 2</li>
-          </ul>
+          <iframe 
+            ref={iFrameRef} 
+            src="https://csb-v9xs7u.netlify.app/" 
+            title="embedded-app" 
+          ></iframe>
         </section>
       </div>
     </div>
