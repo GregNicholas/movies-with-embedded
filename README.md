@@ -10,7 +10,12 @@ Possible enhancements could be checking for duplicates, removing items from the 
 
 ## Running the App
 
-Clone the repo and the project directory, you can run:
+The app is deployed at https://movies-list-gregschoenberg.netlify.app/ and will run with the embedded app using its url below.
+
+The embedded app is deployed at http://csb-v9xs7u.net
+
+## Running Locally 
+Clone the repo and put the embedded-list app in another directory, In the movies app, you can run:
 
 ### `npm i`
 
@@ -20,8 +25,8 @@ Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 In another window, run the embedded app.
-In the index.js file of the embedded app, change the origin url to where the top-movies app is running.
-In the top-movies app, App.js, in the postMessage function, change the url to where the embedded app is running
+In the index.js file of the embedded app, change the origin url to where the movies app is running.
+In the movies app, App.js, in the postMessage function, change the url to where the embedded app is running
 
 
 # Getting Started with Create React App
