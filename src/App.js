@@ -58,7 +58,7 @@ export default function App() {
   // function to send a title to the embedded app on click
   const getTitle = (title) => {
     if(!iFrameRef.current){
-      return
+      return 
     }
     // if running locally, change link below e.g., "http://localhost:3001/"
     iFrameRef.current.contentWindow.postMessage(title, "https://csb-v9xs7u.netlify.app/")
